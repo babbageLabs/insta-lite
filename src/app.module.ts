@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { User } from '@/users/entities/user.entity';
 import { ProfileModule } from './profile/profile.module';
 import { Profile } from '@/profile/entities/profile.entity';
+import { PhotosModule } from './photos/photos.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { Profile } from '@/profile/entities/profile.entity';
     UsersModule,
     AuthModule,
     ProfileModule,
+    PhotosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
