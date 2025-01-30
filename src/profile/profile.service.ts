@@ -7,54 +7,60 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class ProfileService {
-    constructor(
-        @InjectRepository(Profile)
-        private readonly profileRepository: Repository<Profile>,
-    ) { }
+  constructor(
+    @InjectRepository(Profile)
+    private readonly profileRepository: Repository<Profile>,
+  ) {}
 
-    async create(userId: number, createProfileDto: CreateProfileDto): Promise<Profile> {
-        const profile = this.profileRepository.create({
-            ...createProfileDto,
-            userId,
-        });
-        return this.profileRepository.save(profile);
+  async create(
+    userId: number,
+    createProfileDto: CreateProfileDto,
+  ): Promise<Profile> {
+    const profile = this.profileRepository.create({
+      ...createProfileDto,
+      userId,
+    });
+    return this.profileRepository.save(profile);
+  }
+
+  async findOne(userId: number): Promise<Profile> {
+    const profile = await this.profileRepository.findOne({
+      where: { userId },
+      relations: ['user'],
+    });
+
+    if (!profile) {
+      throw new NotFoundException('Profile not found');
     }
 
-    async findOne(userId: number): Promise<Profile> {
-        const profile = await this.profileRepository.findOne({
-            where: { userId },
-            relations: ['user'],
-        });
+    return profile;
+  }
 
-        if (!profile) {
-            throw new NotFoundException('Profile not found');
-        }
+  async update(
+    userId: number,
+    updateProfileDto: UpdateProfileDto,
+  ): Promise<Profile> {
+    const profile = await this.findOne(userId);
 
-        return profile;
-    }
+    Object.assign(profile, updateProfileDto);
+    profile.updatedAt = new Date();
 
-    async update(userId: number, updateProfileDto: UpdateProfileDto): Promise<Profile> {
-        const profile = await this.findOne(userId);
+    return this.profileRepository.save(profile);
+  }
 
-        Object.assign(profile, updateProfileDto);
-        profile.updatedAt = new Date();
+  async incrementFollowers(userId: number): Promise<void> {
+    await this.profileRepository.increment({ userId }, 'followersCount', 1);
+  }
 
-        return this.profileRepository.save(profile);
-    }
+  async decrementFollowers(userId: number): Promise<void> {
+    await this.profileRepository.decrement({ userId }, 'followersCount', 1);
+  }
 
-    async incrementFollowers(userId: number): Promise<void> {
-        await this.profileRepository.increment({ userId }, 'followersCount', 1);
-    }
+  async incrementFollowing(userId: number): Promise<void> {
+    await this.profileRepository.increment({ userId }, 'followingCount', 1);
+  }
 
-    async decrementFollowers(userId: number): Promise<void> {
-        await this.profileRepository.decrement({ userId }, 'followersCount', 1);
-    }
-
-    async incrementFollowing(userId: number): Promise<void> {
-        await this.profileRepository.increment({ userId }, 'followingCount', 1);
-    }
-
-    async decrementFollowing(userId: number): Promise<void> {
-        await this.profileRepository.decrement({ userId }, 'followingCount', 1);
-    }
+  async decrementFollowing(userId: number): Promise<void> {
+    await this.profileRepository.decrement({ userId }, 'followingCount', 1);
+  }
 }

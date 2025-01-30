@@ -52,12 +52,15 @@ describe('ProfileController', () => {
       const result = await controller.create(req, createProfileDto);
 
       expect(result).toEqual(expectedResult);
-      expect(service.create).toHaveBeenCalledWith(req.user.id, createProfileDto);
+      expect(service.create).toHaveBeenCalledWith(
+        req.user.id,
+        createProfileDto,
+      );
     });
   });
 
   describe('getMyProfile', () => {
-    it('should return the user\'s profile', async () => {
+    it("should return the user's profile", async () => {
       const req = { user: { id: 1 } };
       const expectedProfile = {
         id: 1,
@@ -110,7 +113,10 @@ describe('ProfileController', () => {
       const result = await controller.update(req, updateProfileDto);
 
       expect(result).toEqual(expectedResult);
-      expect(service.update).toHaveBeenCalledWith(req.user.id, updateProfileDto);
+      expect(service.update).toHaveBeenCalledWith(
+        req.user.id,
+        updateProfileDto,
+      );
     });
   });
 });
