@@ -8,19 +8,19 @@ import { UsersModule } from 'src/users/users.module';
 import { User } from 'src/users/entities/user.entity';
 
 @Module({
-    imports: [
-        PassportModule,
-        JwtModule.registerAsync({
-            useFactory: () => ({
-                secret: process.env.JWT_SECRET,
-                signOptions: { expiresIn: '1d' },
-            }),
-        }),
-        TypeOrmModule.forFeature([User]),
-        UsersModule,
-    ],
-    controllers: [AuthController],
-    providers: [AuthService],
-    exports: [AuthService],
+  imports: [
+    PassportModule,
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET,
+        signOptions: { expiresIn: '1d' },
+      }),
+    }),
+    TypeOrmModule.forFeature([User]),
+    UsersModule,
+  ],
+  controllers: [AuthController],
+  providers: [AuthService],
+  exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

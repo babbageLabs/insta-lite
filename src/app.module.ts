@@ -22,8 +22,10 @@ import { User } from './users/entities/user.entity';
       entities: [User],
       synchronize: process.env.NODE_ENV !== 'production',
     }),
-    UsersModule, AuthModule],
+    UsersModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
