@@ -16,7 +16,7 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 @Controller('profile')
 @UseGuards(JwtAuthGuard)
 export class ProfileController {
-  constructor(private readonly profilesService: ProfileService) { }
+  constructor(private readonly profilesService: ProfileService) {}
 
   @Post()
   create(@Request() req, @Body() createProfileDto: CreateProfileDto) {

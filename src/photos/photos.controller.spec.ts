@@ -47,7 +47,7 @@ describe('PhotosController', () => {
   describe('uploadPhoto', () => {
     it('should upload a photo successfully', async () => {
       const result = await controller.uploadPhoto(mockFile as any, 'user123');
-      
+
       expect(result).toEqual(mockPhoto);
       expect(service.uploadPhoto).toHaveBeenCalledWith(mockFile, 'user123');
     });
@@ -56,7 +56,7 @@ describe('PhotosController', () => {
   describe('getPhotos', () => {
     it('should return an array of photos', async () => {
       const result = await controller.getPhotos('user123');
-      
+
       expect(result).toEqual([mockPhoto]);
       expect(service.getPhotos).toHaveBeenCalledWith('user123');
     });
@@ -65,7 +65,7 @@ describe('PhotosController', () => {
   describe('deletePhoto', () => {
     it('should delete a photo successfully', async () => {
       const result = await controller.deletePhoto('123', 'user123');
-      
+
       expect(result).toEqual({ message: 'Photo deleted successfully' });
       expect(service.deletePhoto).toHaveBeenCalledWith('123', 'user123');
     });
