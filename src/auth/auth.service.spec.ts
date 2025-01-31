@@ -8,12 +8,10 @@ import { AuthService } from './auth.service';
 import { User } from '@/users/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 
-
 jest.mock('bcryptjs', () => ({
   compare: jest.fn(),
   hash: jest.fn(),
 }));
-
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -84,7 +82,9 @@ describe('AuthService', () => {
     it('should throw ConflictException if user already exists', async () => {
       mockUserRepository.findOne.mockResolvedValue({ id: 1, ...signUpDto });
 
-      await expect(service.signUp(signUpDto)).rejects.toThrow(ConflictException);
+      await expect(service.signUp(signUpDto)).rejects.toThrow(
+        ConflictException,
+      );
       expect(mockUserRepository.findOne).toHaveBeenCalledWith({
         where: { email: signUpDto.email },
       });
@@ -108,7 +108,9 @@ describe('AuthService', () => {
     it('should successfully login a user', async () => {
       const mockToken = 'jwt-token';
       mockUserRepository.findOne.mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, 'compare').mockImplementation(() => Promise.resolve(true));
+      jest
+        .spyOn(bcrypt, 'compare')
+        .mockImplementation(() => Promise.resolve(true));
       mockJwtService.sign.mockReturnValue(mockToken);
 
       const result = await service.login(loginDto);
@@ -117,7 +119,10 @@ describe('AuthService', () => {
       expect(mockUserRepository.findOne).toHaveBeenCalledWith({
         where: { email: loginDto.email },
       });
-      expect(bcrypt.compare).toHaveBeenCalledWith(loginDto.password, mockUser.password);
+      expect(bcrypt.compare).toHaveBeenCalledWith(
+        loginDto.password,
+        mockUser.password,
+      );
       expect(mockJwtService.sign).toHaveBeenCalledWith({
         sub: mockUser.id,
         email: mockUser.email,
@@ -127,7 +132,9 @@ describe('AuthService', () => {
     it('should throw UnauthorizedException if user not found', async () => {
       mockUserRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.login(loginDto)).rejects.toThrow(UnauthorizedException);
+      await expect(service.login(loginDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
       expect(mockUserRepository.findOne).toHaveBeenCalledWith({
         where: { email: loginDto.email },
       });
@@ -137,13 +144,20 @@ describe('AuthService', () => {
 
     it('should throw UnauthorizedException if password is invalid', async () => {
       mockUserRepository.findOne.mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, 'compare').mockImplementation(() => Promise.resolve(false));
+      jest
+        .spyOn(bcrypt, 'compare')
+        .mockImplementation(() => Promise.resolve(false));
 
-      await expect(service.login(loginDto)).rejects.toThrow(UnauthorizedException);
+      await expect(service.login(loginDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
       expect(mockUserRepository.findOne).toHaveBeenCalledWith({
         where: { email: loginDto.email },
       });
-      expect(bcrypt.compare).toHaveBeenCalledWith(loginDto.password, mockUser.password);
+      expect(bcrypt.compare).toHaveBeenCalledWith(
+        loginDto.password,
+        mockUser.password,
+      );
       expect(mockJwtService.sign).not.toHaveBeenCalled();
     });
   });
