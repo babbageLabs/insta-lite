@@ -13,6 +13,12 @@ export class Profile {
   id: number;
 
   @Column()
+  username: string;
+
+  @Column()
+  avatarUrl: string;
+
+  @Column()
   fullName: string;
 
   @Column({ nullable: true })
