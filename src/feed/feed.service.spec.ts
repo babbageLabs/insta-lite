@@ -94,6 +94,10 @@ describe('FeedService', () => {
           mimetype: 'image/jpeg',
           size: 1000,
           uploadedAt: new Date(),
+          description: '',
+          hashtags: [],
+          likes: [],
+          comments: [],
         },
       ];
 
