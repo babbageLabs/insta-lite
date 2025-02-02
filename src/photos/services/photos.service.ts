@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
-import { Photo } from './entities/photo.entity';
-import { PhotoResponseDto } from './dto/upload-photo.dto';
+import { Photo } from '../entities/photo.entity';
+import { PhotoResponseDto } from '../dto/upload-photo.dto';
 // import { Express } from 'express'
 
 @Injectable()

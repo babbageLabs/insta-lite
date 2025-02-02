@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FeedService } from './feed.service';
 import { FeedRepository } from './repositories/feed.repository';
 import { FollowService } from '@/profile/services/follow.service';
-import { PhotosService } from '@/photos/photos.service';
+import { PhotosService } from '@/photos/services/photos.service';
 import { FeedPaginationDto } from './dto/feed-pagination.dto';
 import { FeedResponseDto } from './dto/feed-response.dto';
 import { Follow } from '@/profile/entities/follow.entity';
