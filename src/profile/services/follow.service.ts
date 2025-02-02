@@ -6,7 +6,7 @@ import {
 import { FollowRepository } from '../repositories/follow.repository';
 import { ProfileService } from '../../profile/services/profile.service';
 import { Follow } from '../entities/follow.entity';
-import { FollowStatsDto } from '../dto/follow-response.dto';
+import { FollowResponseDto, FollowStatsDto } from '../dto/follow-response.dto';
 
 @Injectable()
 export class FollowService {
@@ -15,7 +15,29 @@ export class FollowService {
     private readonly profileService: ProfileService,
   ) {}
 
-  async followUser(followerId: number, followingId: number): Promise<Follow> {
+  private mapFollowToDto(follow: Follow): FollowResponseDto {
+    return {
+      id: follow.id,
+      followerId: follow.followerId,
+      followingId: follow.followingId,
+      createdAt: follow.createdAt,
+      follower: {
+        id: follow.follower.id,
+        username: follow.follower.username,
+        avatarUrl: follow.follower.avatarUrl,
+      },
+      following: {
+        id: follow.following.id,
+        username: follow.following.username,
+        avatarUrl: follow.following.avatarUrl,
+      },
+    };
+  }
+
+  async followUser(
+    followerId: number,
+    followingId: number,
+  ): Promise<FollowResponseDto> {
     // Check if users exist
     await this.profileService.findOne(followerId);
     await this.profileService.findOne(followingId);
@@ -34,7 +56,11 @@ export class FollowService {
       throw new ConflictException('Already following this user');
     }
 
-    return this.followRepository.createFollow(followerId, followingId);
+    const follow = await this.followRepository.createFollow(
+      followerId,
+      followingId,
+    );
+    return this.mapFollowToDto(follow);
   }
 
   async unfollowUser(followerId: number, followingId: number): Promise<void> {
@@ -53,18 +79,28 @@ export class FollowService {
     userId: number,
     page: number = 1,
     limit: number = 20,
-  ): Promise<[Follow[], number]> {
+  ): Promise<[FollowResponseDto[], number]> {
     const offset = (page - 1) * limit;
-    return this.followRepository.getFollowers(userId, limit, offset);
+    const [follows, count] = await this.followRepository.getFollowers(
+      userId,
+      limit,
+      offset,
+    );
+    return [follows.map((follow) => this.mapFollowToDto(follow)), count];
   }
 
   async getFollowing(
     userId: number,
     page: number = 1,
     limit: number = 20,
-  ): Promise<[Follow[], number]> {
+  ): Promise<[FollowResponseDto[], number]> {
     const offset = (page - 1) * limit;
-    return this.followRepository.getFollowing(userId, limit, offset);
+    const [follows, count] = await this.followRepository.getFollowing(
+      userId,
+      limit,
+      offset,
+    );
+    return [follows.map((follow) => this.mapFollowToDto(follow)), count];
   }
 
   async getFollowStats(
@@ -92,12 +128,14 @@ export class FollowService {
     };
   }
 
-  async getFollowingIds(userId: number): Promise<number[]> {
-    return this.followRepository.getFollowingIds(userId);
+  async getFollowingIds(userId: number): Promise<string[]> {
+    const ids = await this.followRepository.getFollowingIds(userId);
+    return ids.map((id) => id.toString());
   }
 
-  async getFollowerIds(userId: number): Promise<number[]> {
-    return this.followRepository.getFollowerIds(userId);
+  async getFollowerIds(userId: number): Promise<string[]> {
+    const ids = await this.followRepository.getFollowerIds(userId);
+    return ids.map((id) => id.toString());
   }
 
   async isFollowing(followerId: number, followingId: number): Promise<boolean> {

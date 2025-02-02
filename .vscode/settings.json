@@ -1,8 +1,15 @@
 {
-    "eslint.enable": true,
-    "editor.formatOnSave": true,
+  "eslint.enable": true,
+  "editor.formatOnSave": true,
 
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "jestrunner.configPath": "jest.config.ts",
+  "jestrunner.jestCommand": "pnpm run test",
+  "jestrunner.projectPath": ".",
+
+  "jest.jestCommandLine": "pnpm jest",
+  "jest.runMode": "on-demand"
 }

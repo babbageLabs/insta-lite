@@ -1,15 +1,15 @@
 export class FollowResponseDto {
   id: string;
-  followerId: string;
-  followingId: string;
+  followerId: number;
+  followingId: number;
   createdAt: Date;
   follower: {
-    id: string;
+    id: number;
     username: string;
     avatarUrl: string;
   };
   following: {
-    id: string;
+    id: number;
     username: string;
     avatarUrl: string;
   };
