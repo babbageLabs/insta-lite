@@ -10,6 +10,7 @@ import { ProfileModule } from './profile/profile.module';
 import { Profile } from '@/profile/entities/profile.entity';
 import { PhotosModule } from './photos/photos.module';
 import { FeedModule } from './feed/feed.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { FeedModule } from './feed/feed.module';
     ProfileModule,
     PhotosModule,
     FeedModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

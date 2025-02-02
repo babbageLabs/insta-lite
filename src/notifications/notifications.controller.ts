@@ -1,0 +1,61 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
+import { NotificationsService } from './notifications.service';
+import { CreateNotificationDto } from './dto/create-notification.dto';
+import { UpdateNotificationDto } from './dto/update-notification.dto';
+
+@Controller('notifications')
+export class NotificationsController {
+  constructor(private readonly notificationsService: NotificationsService) {}
+
+  @Post()
+  create(@Body() createNotificationDto: CreateNotificationDto) {
+    return this.notificationsService.create(createNotificationDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.notificationsService.findAll();
+  }
+
+  @Get('unread')
+  findUnread(@Query('userId') userId: string) {
+    return this.notificationsService.findUnreadByUser(userId);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.notificationsService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateNotificationDto: UpdateNotificationDto,
+  ) {
+    return this.notificationsService.update(id, updateNotificationDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.notificationsService.remove(id);
+  }
+
+  @Patch(':id/read')
+  markAsRead(@Param('id') id: string) {
+    return this.notificationsService.markAsRead(id);
+  }
+
+  @Patch('mark-all-read')
+  markAllAsRead() {
+    return this.notificationsService.markAllAsRead();
+  }
+}
