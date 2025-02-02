@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { PhotosService } from './photos.service';
-import { Photo } from './entities/photo.entity';
+import { Photo } from '../entities/photo.entity';
 import { Repository } from 'typeorm';
 import { S3 } from 'aws-sdk';
 

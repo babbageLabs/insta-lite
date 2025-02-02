@@ -12,7 +12,7 @@ import {
   FileTypeValidator,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { PhotosService } from './photos.service';
+import { PhotosService } from './services/photos.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { User } from '@/decorators/user.decorator';
 

@@ -4,7 +4,7 @@ import { FeedPaginationDto } from './dto/feed-pagination.dto';
 import { FeedResponseDto } from './dto/feed-response.dto';
 
 import { FollowService } from '@/profile/services/follow.service';
-import { PhotosService } from '@/photos/photos.service';
+import { PhotosService } from '@/photos/services/photos.service';
 
 @Injectable()
 export class FeedService {
