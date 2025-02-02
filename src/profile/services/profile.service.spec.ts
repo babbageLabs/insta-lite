@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProfileService } from './profile.service';
-import { Profile } from './entities/profile.entity';
+import { Profile } from '../entities/profile.entity';
 import { NotFoundException } from '@nestjs/common';
 
 describe('ProfilesService', () => {

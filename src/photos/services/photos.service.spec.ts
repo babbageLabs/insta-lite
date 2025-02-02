@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { PhotosService } from './photos.service';
-import { Photo } from './entities/photo.entity';
+import { Photo } from '../entities/photo.entity';
 import { Repository } from 'typeorm';
 import { S3 } from 'aws-sdk';
 
@@ -35,12 +35,12 @@ describe('PhotosService', () => {
     mockS3 = {
       upload: jest.fn().mockReturnValue({
         promise: jest.fn().mockResolvedValue({
-          Location: 'https://example.com/test.jpg'
-        })
+          Location: 'https://example.com/test.jpg',
+        }),
       }),
       deleteObject: jest.fn().mockReturnValue({
-        promise: jest.fn().mockResolvedValue({})
-      })
+        promise: jest.fn().mockResolvedValue({}),
+      }),
     } as any;
 
     // Mock the S3 constructor
@@ -105,10 +105,12 @@ describe('PhotosService', () => {
         promise: jest.fn().mockRejectedValue(new Error('Upload failed')),
         abort: jest.fn(),
         send: jest.fn(),
-        on: jest.fn()
+        on: jest.fn(),
       } as any);
 
-      await expect(service.uploadPhoto(mockFile as any, 'user123')).rejects.toThrow('Upload failed');
+      await expect(
+        service.uploadPhoto(mockFile as any, 'user123'),
+      ).rejects.toThrow('Upload failed');
     });
   });
 
@@ -116,13 +118,15 @@ describe('PhotosService', () => {
     it('should return an array of photos for a user', async () => {
       const result = await service.getPhotos('user123');
 
-      expect(result).toEqual([{
-        id: mockPhoto.id,
-        filename: mockPhoto.filename,
-        originalname: mockPhoto.originalname,
-        url: mockPhoto.url,
-        uploadedAt: mockPhoto.uploadedAt,
-      }]);
+      expect(result).toEqual([
+        {
+          id: mockPhoto.id,
+          filename: mockPhoto.filename,
+          originalname: mockPhoto.originalname,
+          url: mockPhoto.url,
+          uploadedAt: mockPhoto.uploadedAt,
+        },
+      ]);
       expect(photoRepository.find).toHaveBeenCalledWith({
         where: { userId: 'user123' },
         order: { uploadedAt: 'DESC' },
@@ -144,7 +148,9 @@ describe('PhotosService', () => {
     it('should throw NotFoundException if photo not found', async () => {
       jest.spyOn(photoRepository, 'findOne').mockResolvedValue(null);
 
-      await expect(service.deletePhoto('123', 'user123')).rejects.toThrow('Photo not found');
+      await expect(service.deletePhoto('123', 'user123')).rejects.toThrow(
+        'Photo not found',
+      );
     });
 
     // it('should throw an error if S3 deletion fails', async () => {

@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { PhotoLike } from './photo-like.entity';
+import { PhotoComment } from './photo-comment.entity';
 
 @Entity('photos')
 export class Photo {
@@ -23,6 +25,18 @@ export class Photo {
   @Column()
   userId: string;
 
+  @Column({ nullable: true })
+  description: string;
+
+  @Column('simple-array', { nullable: true })
+  hashtags: string[];
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   uploadedAt: Date;
+
+  @OneToMany(() => PhotoLike, (like) => like.photo)
+  likes: PhotoLike[];
+
+  @OneToMany(() => PhotoComment, (comment) => comment.photo)
+  comments: PhotoComment[];
 }

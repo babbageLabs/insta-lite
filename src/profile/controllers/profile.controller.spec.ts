@@ -1,9 +1,9 @@
 // src/profiles/profiles.controller.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProfileController } from './profile.controller';
-import { ProfileService } from './profile.service';
-import { CreateProfileDto } from './dto/create-profile.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+import { ProfileService } from '../services/profile.service';
+import { CreateProfileDto } from '../dto/create-profile.dto';
+import { UpdateProfileDto } from '../dto/update-profile.dto';
 
 describe('ProfileController', () => {
   let controller: ProfileController;
